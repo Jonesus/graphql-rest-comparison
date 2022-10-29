@@ -1,0 +1,26 @@
+{
+  "name": "graphql-rest-comparison",
+  "version": "1.0.0",
+  "description": "Course project for comparing GraphQL and REST",
+  "main": "index.js",
+  "scripts": {
+    "init-db": "node node_scripts/init_database.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jonesus/graphql-rest-comparison.git"
+  },
+  "type": "module",
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jonesus/graphql-rest-comparison/issues"
+  },
+  "homepage": "https://github.com/Jonesus/graphql-rest-comparison#readme",
+  "dependencies": {
+    "express": "4.18.2",
+    "express-graphql": "0.12.0",
+    "graphql": "15.8.0",
+    "sqlite3": "5.1.2"
+  }
+}
