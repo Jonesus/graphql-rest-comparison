@@ -4,7 +4,8 @@
   "description": "Course project for comparing GraphQL and REST",
   "main": "index.js",
   "scripts": {
-    "init-db": "node node_scripts/init_database.js"
+    "init-db": "node node_scripts/init_database.js",
+    "graphql": "node src/graphql_server.js"
   },
   "repository": {
     "type": "git",
