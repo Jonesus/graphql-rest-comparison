@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "init-db": "node node_scripts/init_database.js",
-    "graphql": "node src/graphql_server.js"
+    "graphql": "node src/graphql_server.js",
+    "clean": "rm db.sqlite3"
   },
   "repository": {
     "type": "git",
