@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "init-db": "node node_scripts/init_database.js",
+    "populate-db": "node node_scripts/populate_database.js",
     "graphql": "node src/graphql_server.js",
     "clean": "rm db.sqlite3"
   },
@@ -24,5 +25,8 @@
     "express-graphql": "0.12.0",
     "graphql": "15.8.0",
     "sqlite3": "5.1.2"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "7.6.0"
   }
 }

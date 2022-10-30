@@ -33,4 +33,4 @@ CREATE INDEX "idx_comment__parent" ON "Comment" ("parent");
 
 CREATE INDEX "idx_comment__post" ON "Comment" ("post");
 
-CREATE INDEX "idx_comment__user" ON "Comment" ("user")
+CREATE INDEX "idx_comment__user" ON "Comment" ("user");
