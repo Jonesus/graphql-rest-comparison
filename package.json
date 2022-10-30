@@ -6,7 +6,7 @@
   "scripts": {
     "init-db": "node node_scripts/init_database.js",
     "populate-db": "node node_scripts/populate_database.js",
-    "graphql": "node src/graphql_server.js",
+    "graphql": "node src/graphql/index.js",
     "clean": "rm db.sqlite3"
   },
   "repository": {
