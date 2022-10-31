@@ -7,6 +7,7 @@
     "init-db": "node node_scripts/init_database.js",
     "populate-db": "node node_scripts/populate_database.js",
     "graphql": "node src/graphql/index.js",
+    "graphql-dev": "nodemon src/graphql/index.js",
     "clean": "rm db.sqlite3"
   },
   "repository": {
@@ -27,6 +28,7 @@
     "sqlite3": "5.1.2"
   },
   "devDependencies": {
-    "@faker-js/faker": "7.6.0"
+    "@faker-js/faker": "7.6.0",
+    "nodemon": "^2.0.20"
   }
 }
