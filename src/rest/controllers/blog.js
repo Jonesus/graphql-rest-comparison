@@ -13,4 +13,15 @@ router.get("/", (req, res, next) => {
     });
 });
 
+router.get("/:id", (req, res, next) => {
+  const id = [req.params.id]
+  db.get(`SELECT * FROM Blog WHERE id = ?`, [id], (err, row) => {
+      if (err) {
+        res.status(400).json({"error":err.message});
+        return;
+      }
+      res.status(200).json(row);
+    });
+});
+
 export default router
