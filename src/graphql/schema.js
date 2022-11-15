@@ -1,6 +1,6 @@
 import graphql from "graphql";
 
-import { runListQuery, runGetQuery, runQuery } from "../utils.js";
+import { runListQuery, runGetQuery } from "../utils.js";
 
 const UserType = new graphql.GraphQLObjectType({
   name: "User",
