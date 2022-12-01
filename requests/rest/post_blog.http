@@ -1,0 +1,8 @@
+POST http://localhost:4001/rest/blog HTTP/1.1
+content-Type: application/json
+
+{
+  "id": 51,
+  "name": "test",
+  "url": "testurl"
+}

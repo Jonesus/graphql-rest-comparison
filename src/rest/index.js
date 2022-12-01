@@ -7,6 +7,8 @@ import commentRouter from './controllers/comment.js';
 
 const app = express();
 
+app.use(express.json());
+
 app.use('/rest/blog', blogRouter);
 app.use('/rest/post', postRouter);
 app.use('/rest/user', userRouter);
