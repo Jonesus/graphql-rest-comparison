@@ -3,3 +3,7 @@ GET http://localhost:4001/rest/blog HTTP/1.1
 ###
 
 GET http://localhost:4001/rest/blog/1 HTTP/1.1
+
+### 
+
+GET http://localhost:4001/rest/post/1/comments HTTP/1.1

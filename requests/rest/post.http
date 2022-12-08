@@ -13,7 +13,7 @@ POST http://localhost:4001/rest/comment HTTP/1.1
 content-Type: application/json
 
 {
-  "id": 1,
+  "id": 3,
   "body": "test",
   "parent": 0,
   "post": 1,
@@ -41,4 +41,16 @@ content-Type: application/json
 {
   "id": 101,
   "name": "test"
+}
+
+###
+
+POST http://localhost:4001/rest/post/5/comments HTTP/1.1
+content-Type: application/json
+
+{
+  "id": 5,
+  "body": "test",
+  "parent": 0,
+  "user": 1
 }
