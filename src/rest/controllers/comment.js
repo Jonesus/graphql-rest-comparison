@@ -24,4 +24,17 @@ router.get("/:id", (req, res, next) => {
     });
 });
 
+router.post("/", (req, res, next) => {
+  const body = req.body;
+  db.run(`INSERT INTO Comment (id, body, post, parent, user) VALUES (?, ?, ?, ?, ?)`, [body.id, body.body, body.post, body.parent, body.user], (err, row) => {
+      if (err) {
+        res.status(400).json({"error":err.message});
+        return;
+      }
+      res.status(201).json({
+        "comment_id": body.id
+    })
+    });
+});
+
 export default router

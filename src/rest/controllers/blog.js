@@ -24,4 +24,17 @@ router.get("/:id", (req, res, next) => {
     });
 });
 
+router.post("/", (req, res, next) => {
+  const body = req.body;
+  db.run(`INSERT INTO Blog (id, name, url) VALUES (?, ?, ?)`, [body.id, body.name, body.url], (err, row) => {
+      if (err) {
+        res.status(400).json({"error":err.message});
+        return;
+      }
+      res.status(201).json({
+        "blog_id": body.id
+    })
+    });
+});
+
 export default router

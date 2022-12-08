@@ -1,0 +1,44 @@
+POST http://localhost:4001/rest/blog HTTP/1.1
+content-Type: application/json
+
+{
+  "id": 52,
+  "name": "test",
+  "url": "testurl"
+}
+
+###
+
+POST http://localhost:4001/rest/comment HTTP/1.1
+content-Type: application/json
+
+{
+  "id": 1,
+  "body": "test",
+  "parent": 0,
+  "post": 1,
+  "user": 1
+}
+
+###
+
+POST http://localhost:4001/rest/post HTTP/1.1
+content-Type: application/json
+
+{
+  "id": 1001,
+  "title": "test",
+  "body": "test post",
+  "blog": 1,
+  "author": 1
+}
+
+###
+
+POST http://localhost:4001/rest/user HTTP/1.1
+content-Type: application/json
+
+{
+  "id": 101,
+  "name": "test"
+}
