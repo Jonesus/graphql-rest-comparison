@@ -4,10 +4,16 @@ import { runListQuery, runGetQuery, runInsertQuery } from "../utils.js";
 
 const UserType = new graphql.GraphQLObjectType({
   name: "User",
-  fields: {
+  fields: () => ({
     id: { type: graphql.GraphQLID },
     name: { type: graphql.GraphQLString },
-  },
+    comments: {
+      type: graphql.GraphQLList(CommentType),
+      resolve: (user) => {
+        return runListQuery(`SELECT * FROM Comment WHERE user = ${user.id}`);
+      },
+    },
+  }),
 });
 
 const BlogType = new graphql.GraphQLObjectType({
@@ -162,10 +168,19 @@ const queryType = new graphql.GraphQLObjectType({
         blogId: {
           type: graphql.GraphQLID,
         },
+        comments: {
+          type: graphql.GraphQLList(graphql.GraphQLID),
+        },
       },
-      resolve: (root, { blogId }, context, info) => {
+      resolve: (root, { blogId, comments }, context, info) => {
         if (blogId)
           return runListQuery(`SELECT * FROM Post WHERE blog = ${blogId}`);
+        if (comments)
+          return runListQuery(
+            `SELECT DISTINCT p.id, p.title, p.body, p.blog, p.author
+             FROM Post p JOIN Comment c ON p.id=c.post
+             WHERE c.id IN (${comments.join(",")});`
+          );
         return runListQuery("SELECT * FROM Post");
       },
     },
