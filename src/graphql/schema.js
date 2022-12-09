@@ -195,6 +195,14 @@ const mutationType = new GraphQLObjectType({
         return runGetQuery(`SELECT * FROM Comment WHERE id = ${id}`);
       },
     },
+
+    // Query to select all posts
+    AllPosts: {
+      type: graphql.GraphQLList(PostType),
+      resolve: (root, args, context, info) => {
+        return runListQuery("SELECT * FROM Post");
+      },
+    },
   },
 });
 
