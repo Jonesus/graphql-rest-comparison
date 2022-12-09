@@ -5,6 +5,7 @@ import {
   BLOG_COUNT,
   USER_COUNT,
   POST_COUNT,
+  COMMENT_COUNT,
 } from "../src/consts.js";
 
 faker.seed(RANDOM_SEED);
@@ -83,5 +84,30 @@ db.get("SELECT count(*) from Post;", (_err, res) => {
     console.log(`Created ${POST_COUNT} posts`);
   } else {
     console.log(`${count} posts already exist`);
+  }
+});
+
+// Comments
+db.get("SELECT count(*) from Comment;", (_err, res) => {
+  const count = res["count(*)"];
+  if (count < COMMENT_COUNT) {
+    const commentRows = Array.from({ length: COMMENT_COUNT }).map(
+      () =>
+        `("${faker.lorem.paragraph()}", ${faker.datatype.number({
+          min: 1,
+          max: POST_COUNT,
+        })}, NULL, ${faker.datatype.number({ min: 1, max: USER_COUNT })})`
+    );
+
+    const step = 20;
+    for (let i = 0; i < COMMENT_COUNT; i += step) {
+      const commentRowsString = commentRows.slice(i, i + step).join(", ");
+      const commentStatement = `INSERT INTO Comment (body, post, parent, user) VALUES ${commentRowsString};`;
+      db.run(commentStatement);
+    }
+
+    console.log(`Created ${COMMENT_COUNT} comments`);
+  } else {
+    console.log(`${count} comments already exist`);
   }
 });
