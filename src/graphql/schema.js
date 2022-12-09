@@ -1,6 +1,6 @@
-import graphql from "graphql";
+import graphql, { GraphQLObjectType } from "graphql";
 
-import { runListQuery, runGetQuery } from "../utils.js";
+import { runListQuery, runGetQuery, runInsertQuery } from "../utils.js";
 
 const UserType = new graphql.GraphQLObjectType({
   name: "User",
@@ -12,6 +12,21 @@ const UserType = new graphql.GraphQLObjectType({
 
 const BlogType = new graphql.GraphQLObjectType({
   name: "Blog",
+  fields: () => ({
+    id: { type: graphql.GraphQLID },
+    name: { type: graphql.GraphQLString },
+    url: { type: graphql.GraphQLString },
+    posts: {
+      type: graphql.GraphQLList(PostType),
+      resolve: (blog) => {
+        return runListQuery(`SELECT * FROM Post WHERE blog = ${blog.id}`);
+      },
+    },
+  }),
+});
+
+const BlogInputType = new graphql.GraphQLInputObjectType({
+  name: "BlogInput",
   fields: {
     id: { type: graphql.GraphQLID },
     name: { type: graphql.GraphQLString },
@@ -21,22 +36,66 @@ const BlogType = new graphql.GraphQLObjectType({
 
 const PostType = new graphql.GraphQLObjectType({
   name: "Post",
-  fields: {
+  fields: () => ({
     id: { type: graphql.GraphQLID },
     title: { type: graphql.GraphQLString },
     body: { type: graphql.GraphQLString },
-    blog: { type: graphql.GraphQLID },
-    author: { type: graphql.GraphQLID },
-  },
+    blog: {
+      type: BlogType,
+      resolve: (post) => {
+        return runGetQuery(`SELECT * FROM Blog WHERE id = ${post.blog}`);
+      },
+    },
+    author: {
+      type: UserType,
+      resolve: (post) => {
+        return runGetQuery(`SELECT * FROM User WHERE id = ${post.author}`);
+      },
+    },
+    comments: {
+      type: graphql.GraphQLList(CommentType),
+      resolve: (post) => {
+        return runListQuery(`SELECT * FROM Comment WHERE post = ${post.id}`);
+      },
+    },
+  }),
 });
 
 const CommentType = new graphql.GraphQLObjectType({
-  name: "Post",
+  name: "Comment",
+  fields: () => ({
+    id: { type: graphql.GraphQLID },
+    body: { type: graphql.GraphQLString },
+    post: {
+      type: PostType,
+      resolve: (comment) => {
+        return runGetQuery(`SELECT * FROM Post WHERE id = ${comment.post}`);
+      },
+    },
+    parent: {
+      type: CommentType,
+      resolve: (comment) => {
+        return runGetQuery(
+          `SELECT * FROM Comment WHERE id = ${comment.parent}`
+        );
+      },
+    },
+    user: {
+      type: UserType,
+      resolve: (comment) => {
+        return runGetQuery(`SELECT * FROM User WHERE id = ${comment.user}`);
+      },
+    },
+  }),
+});
+
+const CommentInputType = new graphql.GraphQLInputObjectType({
+  name: "CommentInput",
   fields: {
     id: { type: graphql.GraphQLID },
     body: { type: graphql.GraphQLString },
     post: { type: graphql.GraphQLID },
-    parent: { type: graphql.GraphQLID  },
+    parent: { type: graphql.GraphQLID },
     user: { type: graphql.GraphQLID },
   },
 });
@@ -84,16 +143,56 @@ const queryType = new graphql.GraphQLObjectType({
         return runGetQuery(`SELECT * FROM Blog WHERE id = ${id}`);
       },
     },
+    // Query to select post by id
+    Post: {
+      type: PostType,
+      args: {
+        id: {
+          type: new graphql.GraphQLNonNull(graphql.GraphQLID),
+        },
+      },
+      resolve: (root, args, context, info) => {
+        return runGetQuery(`SELECT * FROM Post WHERE id = ${id}`);
+      },
+    },
     // Query to select posts by blog id
     Posts: {
       type: graphql.GraphQLList(PostType),
       args: {
         blogId: {
-          type: new graphql.GraphQLList(graphql.GraphQLID),
+          type: graphql.GraphQLID,
         },
       },
       resolve: (root, { blogId }, context, info) => {
-        return runListQuery(`SELECT * FROM Post WHERE blog = ${blogId}`);
+        if (blogId)
+          return runListQuery(`SELECT * FROM Post WHERE blog = ${blogId}`);
+        return runListQuery("SELECT * FROM Post");
+      },
+    },
+  },
+});
+
+const mutationType = new GraphQLObjectType({
+  name: "Mutation",
+  fields: {
+    createBlog: {
+      type: BlogType,
+      args: {
+        input: { type: BlogInputType },
+      },
+      resolve: async (root, { input }) => {
+        const id = await runInsertQuery("Blog", input);
+        return runGetQuery(`SELECT * FROM Blog WHERE id = ${id}`);
+      },
+    },
+    createComment: {
+      type: CommentType,
+      args: {
+        input: { type: CommentInputType },
+      },
+      resolve: async (root, { input }) => {
+        const id = await runInsertQuery("Comment", input);
+        return runGetQuery(`SELECT * FROM Comment WHERE id = ${id}`);
       },
     },
   },
@@ -102,4 +201,5 @@ const queryType = new graphql.GraphQLObjectType({
 // Construct a schema, using GraphQL schema language
 export const schema = new graphql.GraphQLSchema({
   query: queryType,
+  mutation: mutationType,
 });

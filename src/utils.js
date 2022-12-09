@@ -25,3 +25,21 @@ export async function runGetQuery(queryString) {
     });
   });
 }
+
+export async function runInsertQuery(table, object) {
+  return new Promise((resolve, reject) => {
+    const cols = Object.keys(object).join(", ");
+    const placeholders = Object.keys(object).fill("?").join(", ");
+    db.run(
+      `INSERT INTO ${table} (${cols}) VALUES (${placeholders});`,
+      Object.values(object),
+      function (err) {
+        if (err) {
+          console.log(err);
+          reject([]);
+        }
+        resolve(this.lastID);
+      }
+    );
+  });
+}
