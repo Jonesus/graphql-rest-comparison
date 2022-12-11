@@ -106,7 +106,7 @@ console.log("");
 console.log("Get All Posts Where Author Has Commented");
 console.time('REST');
 const author_comments_rest_response = await axios({
-  url: 'http://localhost:4001/rest/user/1',
+  url: 'http://localhost:4001/rest/comment/user/1',
   method: "get",
 });
 console.timeEnd('REST');
