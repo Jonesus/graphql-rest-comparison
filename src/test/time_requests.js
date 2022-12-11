@@ -1,4 +1,7 @@
 import axios from 'axios';
+import graphql, { GraphQLObjectType, print } from "graphql";
+import gql from 'graphql-tag';
+
 
 const gql_endpoint = "http://localhost:4000/graphql";
 
@@ -37,19 +40,26 @@ const blog_rest_response = await axios({
 });
 console.timeEnd('REST');
 
-const CREATE_BLOG = {
-  "query": `mutation {
-    createBlog(name: ${"gql_test_blog"}, url: ${"google.com"}) {
-     id
+// TODO: Please fix below :D
+
+/* const CREATE_BLOG = gql`
+  mutation createBlog($id: ${graphql.GraphQLID}, $name: ${graphql.GraphQLString}, $url: ${graphql.GraphQLString}) {
+    createBlog(id: $id, name: $name, url: $url) {
+      id
+      name
+      url
     }
-   }`
-};
-// TODO: Uncomment and fix if necessary when api implemented
-/* console.time('GraphQL')
-const blog_gql_response = await axios({
-  url: gql_endpoint,
-  method: "post",
-  data: CREATE_BLOG
+  }
+`;
+
+console.time('GraphQL')
+const blog_gql_response = await axios.post(gql_endpoint, {
+  query: CREATE_BLOG,
+  variables: {
+    id: 100000,
+    name: "gql_test_blog",
+    url: "google.com",
+  },
 });
 console.timeEnd('GraphQL') */
 console.log("");
@@ -85,10 +95,10 @@ const posts_comments_rest_response = await axios({
 });
 console.timeEnd('REST');
 
-// Uncomment and fix if needed when api implemented
-/* const GET_POST_COMMENTS = {
+const GET_POST_COMMENTS = {
   "operationName": "getPostComments",
-  "query": `query getPostComments { Post(id: ${12}) { comments { id body post parent user } }}`
+  "query": `query getPostComments { Post(id: 12) { comments { id body } }
+}`
 };
 
 console.time('GraphQL');
@@ -97,6 +107,7 @@ const posts_comments_gql_response = await axios({
   method: "post",
   data: GET_POST_COMMENTS
 });
-console.timeEnd('GraphQL'); */
+console.timeEnd('GraphQL');
+
 
 

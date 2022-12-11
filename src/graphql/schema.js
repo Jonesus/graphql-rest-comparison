@@ -157,7 +157,7 @@ const queryType = new graphql.GraphQLObjectType({
           type: new graphql.GraphQLNonNull(graphql.GraphQLID),
         },
       },
-      resolve: (root, args, context, info) => {
+      resolve: (root, { id }, context, info) => {
         return runGetQuery(`SELECT * FROM Post WHERE id = ${id}`);
       },
     },
