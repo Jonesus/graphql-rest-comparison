@@ -40,11 +40,11 @@ const blog_rest_response = await axios({
 });
 console.timeEnd('REST');
 
-const randomID = Math.floor(Math.random() * 1000000)
+const randomBlogID = Math.floor(Math.random() * 1000000)
 
 const CREATE_BLOG = {
   "query": `mutation {
-      createBlog(input: {id: ${String(randomID)}, name: "graphql_test_blog", url: "google.com"}){ id, name }
+      createBlog(input: {id: ${String(randomBlogID)}, name: "graphql_test_blog", url: "google.com"}){ id, name }
   }`
 };
 
@@ -134,12 +134,14 @@ console.timeEnd('GraphQL');
 console.log("");
 
 console.log("Comment on a post");
+const randomCommentRestID = Math.floor(Math.random() * 1000000)
+
 console.time('REST');
 const comment_post_rest_response = await axios({
   url: 'http://localhost:4001/rest/comment/',
   method: "post",
   data: {
-    id: randomID,
+    id: randomCommentRestID,
     body: "test",
     post: 1,
     parent: 1,
@@ -148,10 +150,10 @@ const comment_post_rest_response = await axios({
 });
 console.timeEnd('REST');
 
-//TODO: Figure out why this mutation results "Unexpected error value"
+const randomCommentgqlID = Math.floor(Math.random() * 1000000)
 const CREATE_COMMENT = {
   "query": `mutation{
-      createComment(input: {id: ${String(randomID)}, body: "gql test", post: ${1}, parent: ${1}, user: ${1}}){ id }
+      createComment(input: {id: ${String(randomCommentgqlID)}, body: "gql test", post: ${1}, parent: ${1}, user: ${1}}){ id }
   }`
 };
 
@@ -163,8 +165,3 @@ const comment_gql_response = await axios({
 });
 console.timeEnd('GraphQL')
 console.log("");
-
-//console.log(comment_gql_response.data)
-
-
-
