@@ -40,30 +40,22 @@ const blog_rest_response = await axios({
 });
 console.timeEnd('REST');
 
-// TODO: Please fix below :D
+const randomID = Math.floor(Math.random() * 1000000)
 
-/* const CREATE_BLOG = gql`
-  mutation createBlog($id: ${graphql.GraphQLID}, $name: ${graphql.GraphQLString}, $url: ${graphql.GraphQLString}) {
-    createBlog(id: $id, name: $name, url: $url) {
-      id
-      name
-      url
-    }
-  }
-`;
+const CREATE_BLOG = {
+  "query": `mutation {
+      createBlog(input: {id: ${String(randomID)}, name: "graphql_test_blog", url: "google.com"}){ id, name }
+  }`
+};
 
 console.time('GraphQL')
-const blog_gql_response = await axios.post(gql_endpoint, {
-  query: CREATE_BLOG,
-  variables: {
-    id: 100000,
-    name: "gql_test_blog",
-    url: "google.com",
-  },
+const blog_gql_response = await axios({
+  url: gql_endpoint,
+  method: "post",
+  data: CREATE_BLOG
 });
-console.timeEnd('GraphQL') */
+console.timeEnd('GraphQL')
 console.log("");
-
 
 console.log("Get All Posts of a Blog");
 console.time('REST');
@@ -108,6 +100,71 @@ const posts_comments_gql_response = await axios({
   data: GET_POST_COMMENTS
 });
 console.timeEnd('GraphQL');
+console.log("");
+
+//TODO: Authors comments not returned. Fix API?
+console.log("Get All Posts Where Author Has Commented");
+console.time('REST');
+const author_comments_rest_response = await axios({
+  url: 'http://localhost:4001/rest/user/1',
+  method: "get",
+});
+console.timeEnd('REST');
+
+const GET_AUTHOR_COMMENTS = {
+  "operationName": "getAuthorComments",
+  "query": `query getAuthorComments { 
+    User(id: 1) {
+      comments {
+        id
+        body
+      }
+    } 
+  }
+}`
+};
+
+console.time('GraphQL');
+const author_comments_gql_response = await axios({
+  url: gql_endpoint,
+  method: "post",
+  data: GET_POST_COMMENTS
+});
+console.timeEnd('GraphQL');
+console.log("");
+
+console.log("Comment on a post");
+console.time('REST');
+const comment_post_rest_response = await axios({
+  url: 'http://localhost:4001/rest/comment/',
+  method: "post",
+  data: {
+    id: randomID,
+    body: "test",
+    post: 1,
+    parent: 1,
+    user: 1
+  }
+});
+console.timeEnd('REST');
+
+//TODO: Figure out why this mutation results "Unexpected error value"
+const CREATE_COMMENT = {
+  "query": `mutation{
+      createComment(input: {id: ${String(randomID)}, body: "gql test", post: ${1}, parent: ${1}, user: ${1}}){ id }
+  }`
+};
+
+console.time('GraphQL')
+const comment_gql_response = await axios({
+  url: gql_endpoint,
+  method: "post",
+  data: CREATE_COMMENT
+});
+console.timeEnd('GraphQL')
+console.log("");
+
+//console.log(comment_gql_response.data)
 
 
 
