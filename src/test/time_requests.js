@@ -1,8 +1,7 @@
 import axios from 'axios';
-import graphql, { GraphQLObjectType, print } from "graphql";
-import gql from 'graphql-tag';
+import { performance } from 'perf_hooks';
 
-const roundNumber = (rnum, rlength) => { 
+const roundNumber = (rnum, rlength) => {
   var newnumber = Math.round(rnum * Math.pow(10, rlength)) / Math.pow(10, rlength);
   return newnumber;
 }
@@ -35,8 +34,8 @@ for (var i = 0; i < iterations; i++) {
   t0 = performance.now();
   const { users_rest_response } = await axios.get('http://localhost:4001/rest/user')
   t1 = performance.now();
-  users_rest += t1-t0;
-  console.log(`REST: ${roundNumber(t1-t0,2)} ms`);
+  users_rest += t1 - t0;
+  console.log(`REST: ${roundNumber(t1 - t0, 2)} ms`);
 
   const GET_USERS = {
     "operationName": "getUsers",
@@ -50,8 +49,8 @@ for (var i = 0; i < iterations; i++) {
     data: GET_USERS
   });
   t1 = performance.now();
-  users_gql += t1-t0;
-  console.log(`GraphQL: ${roundNumber(t1-t0,2)} ms`);
+  users_gql += t1 - t0;
+  console.log(`GraphQL: ${roundNumber(t1 - t0, 2)} ms`);
   console.log("");
 
 
@@ -66,8 +65,8 @@ for (var i = 0; i < iterations; i++) {
     }
   });
   t1 = performance.now();
-  blog_rest += t1-t0;
-  console.log(`REST: ${roundNumber(t1-t0,2)} ms`);
+  blog_rest += t1 - t0;
+  console.log(`REST: ${roundNumber(t1 - t0, 2)} ms`);
 
   const randomBlogID = Math.floor(Math.random() * 1000000)
 
@@ -84,8 +83,8 @@ for (var i = 0; i < iterations; i++) {
     data: CREATE_BLOG
   });
   t1 = performance.now();
-  blog_gql += t1-t0;
-  console.log(`GraphQL: ${roundNumber(t1-t0,2)} ms`);
+  blog_gql += t1 - t0;
+  console.log(`GraphQL: ${roundNumber(t1 - t0, 2)} ms`);
   console.log("");
 
   console.log("Get All Posts of a Blog");
@@ -95,8 +94,8 @@ for (var i = 0; i < iterations; i++) {
     method: "get",
   });
   t1 = performance.now();
-  posts_of_blog_rest += t1-t0;
-  console.log(`REST: ${roundNumber(t1-t0,2)} ms`);
+  posts_of_blog_rest += t1 - t0;
+  console.log(`REST: ${roundNumber(t1 - t0, 2)} ms`);
 
   const GET_POSTS_OF_BLOG = {
     "operationName": "getPosts",
@@ -110,8 +109,8 @@ for (var i = 0; i < iterations; i++) {
     data: GET_POSTS_OF_BLOG
   });
   t1 = performance.now();
-  posts_of_blog_gql += t1-t0;
-  console.log(`GraphQL: ${roundNumber(t1-t0,2)} ms`);
+  posts_of_blog_gql += t1 - t0;
+  console.log(`GraphQL: ${roundNumber(t1 - t0, 2)} ms`);
   console.log("");
 
   console.log("Get Post Comments");
@@ -121,8 +120,8 @@ for (var i = 0; i < iterations; i++) {
     method: "get",
   });
   t1 = performance.now();
-  posts_comments_rest += t1-t0;
-  console.log(`REST: ${roundNumber(t1-t0,2)} ms`);
+  posts_comments_rest += t1 - t0;
+  console.log(`REST: ${roundNumber(t1 - t0, 2)} ms`);
 
   const GET_POST_COMMENTS = {
     "operationName": "getPostComments",
@@ -137,11 +136,10 @@ for (var i = 0; i < iterations; i++) {
     data: GET_POST_COMMENTS
   });
   t1 = performance.now();
-  posts_comments_gql += t1-t0;
-  console.log(`GraphQL: ${roundNumber(t1-t0,2)} ms`);
+  posts_comments_gql += t1 - t0;
+  console.log(`GraphQL: ${roundNumber(t1 - t0, 2)} ms`);
   console.log("");
 
-  //TODO: Authors comments not returned. Fix API?
   console.log("Get All Posts Where Author Has Commented");
   t0 = performance.now();
   const author_comments_rest_response = await axios({
@@ -149,8 +147,8 @@ for (var i = 0; i < iterations; i++) {
     method: "get",
   });
   t1 = performance.now();
-  author_comments_rest += t1-t0;
-  console.log(`REST: ${roundNumber(t1-t0,2)} ms`);
+  author_comments_rest += t1 - t0;
+  console.log(`REST: ${roundNumber(t1 - t0, 2)} ms`);
 
   const GET_AUTHOR_COMMENTS = {
     "operationName": "getAuthorComments",
@@ -172,8 +170,8 @@ for (var i = 0; i < iterations; i++) {
     data: GET_POST_COMMENTS
   });
   t1 = performance.now();
-  author_comments_gql += t1-t0;
-  console.log(`GraphQL: ${roundNumber(t1-t0,2)} ms`);
+  author_comments_gql += t1 - t0;
+  console.log(`GraphQL: ${roundNumber(t1 - t0, 2)} ms`);
   console.log("");
 
   console.log("Comment on a post");
@@ -192,8 +190,8 @@ for (var i = 0; i < iterations; i++) {
     }
   });
   t1 = performance.now();
-  comment_post_rest += t1-t0;
-  console.log(`REST: ${roundNumber(t1-t0,2)} ms`);
+  comment_post_rest += t1 - t0;
+  console.log(`REST: ${roundNumber(t1 - t0, 2)} ms`);
 
   const randomCommentgqlID = Math.floor(Math.random() * 1000000)
   const CREATE_COMMENT = {
@@ -209,38 +207,38 @@ for (var i = 0; i < iterations; i++) {
     data: CREATE_COMMENT
   });
   t1 = performance.now();
-  comment_post_gql += t1-t0;
-  console.log(`GraphQL: ${roundNumber(t1-t0,2)} ms`);
+  comment_post_gql += t1 - t0;
+  console.log(`GraphQL: ${roundNumber(t1 - t0, 2)} ms`);
   console.log("");
 }
 
 console.log(`Ran ${iterations} iterations. Averages for each test:`);
 console.log("Get All Users:");
-console.log(`REST: ${roundNumber(users_rest / iterations,2)} ms`);
-console.log(`GraphQL: ${roundNumber(users_gql / iterations,2)} ms`);
+console.log(`REST: ${roundNumber(users_rest / iterations, 2)} ms`);
+console.log(`GraphQL: ${roundNumber(users_gql / iterations, 2)} ms`);
 console.log('');
 
 console.log("Create a Blog");
-console.log(`REST: ${roundNumber(blog_rest / iterations,2)} ms`);
-console.log(`GraphQL: ${roundNumber(blog_gql / iterations,2)} ms`);
+console.log(`REST: ${roundNumber(blog_rest / iterations, 2)} ms`);
+console.log(`GraphQL: ${roundNumber(blog_gql / iterations, 2)} ms`);
 console.log('');
 
 console.log("Get All Posts of a Blog");
-console.log(`REST: ${roundNumber(posts_of_blog_rest / iterations,2)} ms`);
-console.log(`GraphQL: ${roundNumber(posts_of_blog_gql / iterations,2)} ms`);
+console.log(`REST: ${roundNumber(posts_of_blog_rest / iterations, 2)} ms`);
+console.log(`GraphQL: ${roundNumber(posts_of_blog_gql / iterations, 2)} ms`);
 console.log('');
 
 console.log("Get Post Comments");
-console.log(`REST: ${roundNumber(posts_comments_rest / iterations,2)} ms`);
-console.log(`GraphQL: ${roundNumber(posts_comments_gql / iterations,2)} ms`);
+console.log(`REST: ${roundNumber(posts_comments_rest / iterations, 2)} ms`);
+console.log(`GraphQL: ${roundNumber(posts_comments_gql / iterations, 2)} ms`);
 console.log('');
 
 console.log("Get All Posts Where Author Has Commented");
-console.log(`REST: ${roundNumber(author_comments_rest / iterations,2)} ms`);
-console.log(`GraphQL: ${roundNumber(author_comments_gql / iterations,2)} ms`);
+console.log(`REST: ${roundNumber(author_comments_rest / iterations, 2)} ms`);
+console.log(`GraphQL: ${roundNumber(author_comments_gql / iterations, 2)} ms`);
 console.log('');
 
 console.log("Comment on a post");
-console.log(`REST: ${roundNumber(comment_post_rest / iterations,2)} ms`);
-console.log(`GraphQL: ${roundNumber(comment_post_gql / iterations,2)} ms`);
+console.log(`REST: ${roundNumber(comment_post_rest / iterations, 2)} ms`);
+console.log(`GraphQL: ${roundNumber(comment_post_gql / iterations, 2)} ms`);
 console.log('');
