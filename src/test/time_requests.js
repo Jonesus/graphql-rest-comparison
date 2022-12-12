@@ -220,27 +220,27 @@ console.log(`REST: ${roundNumber(users_rest / iterations,2)} ms`);
 console.log(`GraphQL: ${roundNumber(users_gql / iterations,2)} ms`);
 console.log('');
 
-console.log("Get All Users:");
+console.log("Create a Blog");
 console.log(`REST: ${roundNumber(blog_rest / iterations,2)} ms`);
 console.log(`GraphQL: ${roundNumber(blog_gql / iterations,2)} ms`);
 console.log('');
 
-console.log("Get All Users:");
+console.log("Get All Posts of a Blog");
 console.log(`REST: ${roundNumber(posts_of_blog_rest / iterations,2)} ms`);
 console.log(`GraphQL: ${roundNumber(posts_of_blog_gql / iterations,2)} ms`);
 console.log('');
 
-console.log("Get All Users:");
+console.log("Get Post Comments");
 console.log(`REST: ${roundNumber(posts_comments_rest / iterations,2)} ms`);
 console.log(`GraphQL: ${roundNumber(posts_comments_gql / iterations,2)} ms`);
 console.log('');
 
-console.log("Get All Users:");
+console.log("Get All Posts Where Author Has Commented");
 console.log(`REST: ${roundNumber(author_comments_rest / iterations,2)} ms`);
 console.log(`GraphQL: ${roundNumber(author_comments_gql / iterations,2)} ms`);
 console.log('');
 
-console.log("Get All Users:");
+console.log("Comment on a post");
 console.log(`REST: ${roundNumber(comment_post_rest / iterations,2)} ms`);
 console.log(`GraphQL: ${roundNumber(comment_post_gql / iterations,2)} ms`);
 console.log('');
